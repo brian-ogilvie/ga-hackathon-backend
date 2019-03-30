@@ -7,7 +7,5 @@ print(df.head(0))
 
 for i in df.head(0):
     print(
-        i + ''' = IntegerField()'''
-    
-    
+        i + ''' = FloatField()'''
     )
