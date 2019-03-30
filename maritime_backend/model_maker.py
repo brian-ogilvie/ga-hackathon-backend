@@ -12,3 +12,4 @@ for i in df.head(0):
     print(
         i + ''' = models.FloatField'''
     )
+
