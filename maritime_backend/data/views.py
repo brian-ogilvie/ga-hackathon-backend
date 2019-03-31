@@ -22,7 +22,7 @@ def individual(request, report_id):
     return JsonResponse({'data':data}, safe=False)
 
 def vessel_record(request, vessel_id):
-    report = Report.objects.filter(vessel= vessel_id, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, eta_utc__isnull=False).order_by('id')[:20]
+    report = Report.objects.filter(vessel= vessel_id, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, total_fuel_oil_rob__isnull=False,eta_utc__isnull=False).exclude(eta_local = '-')[:20]
     data = Report.objects.filter(vessel= vessel_id).select_related('vessel')[:20]
 
     vessel_name = data[0].vessel.vessel_name
@@ -34,13 +34,19 @@ def vessel_record(request, vessel_id):
 
 
 def current_record(request):
-    vessel1 = Report.objects.filter(vessel = 1, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, eta_utc__isnull=False)[:1]
-    vessel1 = list(vessel1.values())
-    vessel2 = Report.objects.filter(vessel = 2, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, eta_utc__isnull=False)[:1]
-    vessel2 = list(vessel2.values())
-    vessel3 = Report.objects.filter(vessel = 3, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, eta_utc__isnull=False)[:1]
-    vessel3 = list(vessel3.values())
-    vessel4 = Report.objects.filter(vessel = 4, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, eta_utc__isnull=False)[:1]
-    vessel4 = list(vessel4.values())
+    
 
-    return JsonResponse({'Nina': vessel1, 'Santa Maria':vessel2, 'Pinta':vessel3, 'Mayflower':vessel4}, safe=False)
+    vessel1 = Report.objects.filter(vessel = 1, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, total_fuel_oil_rob__isnull=False,eta_utc__isnull=False).exclude(eta_local = '-')[:1]
+    vessel1 = list(vessel1.values())[0]
+    vessel1['name'] = 'Nina'
+    vessel2 = Report.objects.filter(vessel = 2, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, total_fuel_oil_rob__isnull=False, eta_utc__isnull=False).exclude(eta_local = '-')[:1]
+    vessel2 = list(vessel2.values())[0]
+    vessel2['name'] = 'Santa Maria'
+    vessel3 = Report.objects.filter(vessel = 3, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, total_fuel_oil_rob__isnull=False, eta_utc__isnull=False, ).exclude(eta_local = '-')[:1]
+    vessel3 = list(vessel3.values())[0]
+    vessel3['name'] = 'Pinta'
+    vessel4 = Report.objects.filter(vessel = 4, speed_through_water__isnull=False, speed_over_ground__isnull=False, eta_local__isnull=False, total_fuel_oil_rob__isnull=False, eta_utc__isnull=False).exclude(eta_local = '-')[:1]
+    vessel4 = list(vessel4.values())[0]
+    vessel4['name'] = 'Mayflower'
+
+    return JsonResponse({'ships': [vessel1, vessel2, vessel3, vessel4]}, safe=False)
