@@ -5,17 +5,14 @@ class Fleet(models.Model):
     class Meta:
         db_table = 'fleet'
 
-
 class Vessel(models.Model):
     captain = models.CharField(max_length=10000, blank=True, null=True)
     chief_engineer = models.CharField(max_length=10000, blank=True, null=True)
     vessel_name = models.CharField(max_length=10000, blank=True, null=True)
     fleet_id = models.IntegerField(default= 0)
-    
     class Meta:
         db_table = 'vessel'
 
-# Create your models here.
 class Report(models.Model):
     timestamp_sutc = models.CharField(max_length=10000, blank=True, null=True)
     timestamp_local = models.CharField(max_length=10000, blank=True, null=True)
@@ -209,11 +206,9 @@ class Report(models.Model):
     estimation_score = models.FloatField(blank=True, null=True)
     completeness_score = models.FloatField(blank=True, null=True)
     plausibility_score = models.FloatField(blank=True, null=True)
-    vessel_id = models.IntegerField(default= 0)
+    vessel = models.ForeignKey(Vessel, on_delete=models.CASCADE)
     
     def __str__(self):
         return self.eta_local
-
     class Meta:
         db_table = 'reports'
-
