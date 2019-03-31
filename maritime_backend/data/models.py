@@ -211,5 +211,9 @@ class Report(models.Model):
     plausibility_score = models.FloatField(blank=True, null=True)
     vessel_id = models.IntegerField(default= 0)
     
+    def __str__(self):
+        return self.eta_local
+
     class Meta:
         db_table = 'reports'
+
